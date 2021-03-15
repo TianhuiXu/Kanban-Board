@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kanban</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h2>My Kanban</h2>
+
+    <div class="row" style="margin:10px">
+
+    <!-- Division of the todo column -->
+    <div class="column" style="background-color:#d6d6d690;">
+        <h2>To-Do</h2>
+        <div class="box">
+            <!-- input and submission for add todo -->
+            <form action="{{ url_for('addtodo') }}" method="post">
+                <div class="row">
+                    <label for="Input_todo" class="label_inform">Task</label>
+                    <input class = "input" type="text" name="Input_todo" id = "Input_todo" placeholder="Task...">
+                </div>
+                <div class="row">
+                    <input type="submit" class="addBtn" value="Add Item">
+                </div>
+            </form>
+        </div>
+        <div>
+            <!-- show todo items and buttons -->
+            <ul class = "ul">
+                {% for todo in incomplete %}
+                <li>
+                    {{ todo.text }}
+                    <a class="item-done left" href="{{ url_for('todoing', id=todo.id) }}" title="renew">
+                        <i class="material-icons left">not_started</i></a>
+                    <a class="item-done left" href="{{ url_for('complete', id=todo.id) }}" title="done">
+                        <i class="material-icons left">done</i></a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Division of the doing column -->
+    <div class="column" style="background-color:#c8c8c890;">
+        <h2>Doing</h2>
+        <div class="box">
+            <!-- input and submission for add doing -->
+            <form action = "{{ url_for('adddoing') }}" method="post">
+                <div class="row">
+                    <label for="Input_doing" class="label_inform">Task</label>
+                    <input class = "input" type="text" name = "Input_doing" id="Input_doing" placeholder="Task...">
+                </div>
+                <div class="row">
+                    <input type="submit" class="addBtn" value="Add Item">
+                </div>
+            </form>
+        </div>
+        <!-- show doing items and buttons -->
+        <ul class = "ul">
+            {% for item in doing %}
+            <li>{{ item.text }}
+                <a class="item-done left" href="{{ url_for('complete', id=item.id) }}" title="done">
+                    <i class="material-icons left">done</i></a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Division of the done column -->
+    <div class="column" style="background-color:#c8c8c890;">
+        <h2>Done</h2>
+        <div class="box">
+            <!-- input and submission for add done -->
+            <form action="{{ url_for('adddone') }}" method="post">
+                <div class="row">
+                    <label for="Input_done" class="label_inform">Task</label>
+                    <input class = "input" type="text" name="Input_done" id = "Input_done" placeholder="Task...">
+                </div>
+                <div class="row">
+                    <input type="submit" class = "addBtn" value="Add Item">
+                </div>
+            </form>
+        </div>
+
+        <!-- show done items and buttons -->
+        <ul class ="ul" id="Done">
+            {% for item in complete %}
+            <li>
+                {{ item.text }}
+                <a class="item-done left" href="{{ url_for('backtodo', id=item.id) }}" title="stilldoing"><i class="material-icons">autorenew</i></a>
+                <a class="delete-item" href="{{ url_for('del_item', id=item.id) }}" title="delete it?"><i class="material-icons">delete</i></a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+    </div>
+
+</body>
+</html>
